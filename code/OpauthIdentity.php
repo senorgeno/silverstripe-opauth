@@ -161,7 +161,7 @@ class OpauthIdentity extends DataObject {
 			$fieldsToWrite = array();
 
 			// If overwrite is true, take everything (subtract Email later)
-			if($overwrite === true) {
+			if($overwrite === true && $member->OriginalAuthProvider == $this->Provider) {
 				$fieldsToWrite = $record;
 			}
 			else if(is_array($overwrite)) {
