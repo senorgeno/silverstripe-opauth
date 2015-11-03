@@ -117,7 +117,15 @@ class OpauthController extends Controller {
 			return $this->handleOpauthException($e);
 		}
 
-		$identity = OpauthIdentity::factory($response);		
+		$identity = OpauthIdentity::factory($response);	
+
+		// arcanum specific code, rejecting sign ups / log ins when there is no 
+		// emaail associated with the account
+		$record = $identity->getMemberRecordFromAuth();	
+		if (!$record['Email'] || $record['Email'] == '') {
+			Session::set('missingEmail', 'show');
+			return $this->redirect('/');
+		}	
 		
 		$settings = Config::inst()->get('OpauthIdentity', 'user_settings');
 		
